@@ -23,3 +23,9 @@ In the repo a makefile is provided, which specifies the commands necessary to ge
 2. Something to build the tex file, so either
     1. an installation of the `make` tool for building programs and then executing `$ make` ([Linux](https://askubuntu.com/questions/161104/how-do-i-install-make), [Windows](https://stackoverflow.com/questions/32127524/how-to-install-and-use-make-in-windows), [Mac](https://stackoverflow.com/questions/10265742/how-to-install-make-and-gcc-on-a-mac))
     2. using a LaTeX editor of your choice and import all the files - it should work then if you use the sequence of programs: `pdflatex` - `biber` - `pdflatex` - `pdflatex`
+    
+## Figures
+
+All figures were drawn by myself with the Draw.Io / diagrams.net (see [diagrams.net](https://app.diagrams.net/)) tool which can also be downloaded. One can import the file `figures.drawio` in the folder `ìmgs` to add figures.
+
+If one wants to add new figures, please be sure that you actually can share them with other people legally or draw them yourself :-)
