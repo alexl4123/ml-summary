@@ -751,8 +751,8 @@ The last topic in the lecture is \textit{Temporal-Difference learning}, which is
 A naive approach is to tryout all subsets of the 10 features, which results in \(2^{10}\) possibilities - which is infeasible, for a large amount of attributes, therefore the task of features selection is NP-hard.\\[1em]
 One can use search to find a local optimum of features to use, by e.g. using a genetic algorithm. Other strategies are for instance using a greedy approach, which comes in two flavors: \textit{Forward Selection} starts with an empty set of features, then features are added iteratively by comparing how good they improve the performance measure, until the desired number of features is selected.\\
 \textit{Backward elimination} starts with all features selected and eliminates all those features iteratively, which seem to not contribute to the current performance of the model, until we arrive at the desired number of features.\\[1em]
-Other possibilities for feature selection include dimensionality reductions, such as the Principal Component Analysis (PCA), Analysis of Correlation or Factor Analysis.\\
-Again other (supervised) methods exist, like entropy/information gain, mutual information, maximum likelihood estimation, odds ration,...\\[1em]
+Other (\textbf{unsupervised}) possibilities for feature selection include dimensionality reductions, such as the Principal Component Analysis (PCA) or Analysis of Correlation.\\
+Again other (\textbf{supervised}) methods exist, like entropy/information gain, mutual information, maximum likelihood estimation, odds ration,...\\[1em]
 Two further methods are presented, a wrapper (using the algorithm as a performance measure, by using search strategies) and a filter (using another proxy measure, a lot faster...) strategy.\\
 
 
@@ -896,7 +896,7 @@ In contrast to classical-machine-learning, Deep-Learning features also learning 
             \item In the lecture slided they provide a few typical filters.
             \item Further this layer handles things like rotation of images, sizes, etc.
         \end{itemize}
-    \item Sub-Sampling Layer / Pooling step / Downsampling
+    \item Sub-Sampling Layer / Pooling step / Downsampling / Max-Pooling 
         \begin{itemize}
             \item Reduces the size of feature maps (so condences the information)
         \end{itemize}
@@ -910,6 +910,7 @@ In contrast to classical-machine-learning, Deep-Learning features also learning 
 \noindent In the lecture they quickly go over the following CNN architectures: \textit{LeNet}, \textit{AlexNet}, \textit{ZFNet}, \textit{VGG Net}, \textit{GoogLeNet}, \textit{ResNet}, \textit{Densenet} and \textit{SqueezeNet}.\\
 To think of a new functioning network is very time and resource intensive, therefore reusing other architectures is highly recommended. One such way to do it is called Transfer Learning, which takes part of a pre-trained network for a different domain, for a different source task and adapts the rest of it for your task at hand. One can do this by cutting off the top layer(s) of a network and replace these with a supervised objective for a certain target domain.\\
 The bottom \(n\) layers can either be frozen (i.e. not updated at all, recommended if one has a scarce database) or fine-tuned (i.e. updated, recommended if one has many labels). This combination is often better in practice than specialized classifiers.\\
+\textit{Off-the-shelf} learning is such an approach, which where one uses the outputs of the cutoff layers as in input for a new (shallow) model.\\
 One can also try a similar approach on unlabeled data, where the task is to train a model on just unlabeled data. Here one can take a pretrained network, cut off the upper part and do unsupervised learning on top of it (like clustering).\\[1em]
 Further it is noted that one can visualize how individual layers work. This is in the context of interpretable AI, so one can see what is going on in the layesr. Another topic is data augmentation, which is important in the training process, as it strives to prevent the network from learning irrelevant facts.\\
 Lastly the lecture recommends to use the \textit{RELU} activation function, as for some other functions the problem of a \textit{weak gradient} can appear, e.g. take the Sigmoid function, if you look at it from a distance it looks like a heaviside function...\\
@@ -1043,8 +1044,12 @@ A simple test for this is the \textit{McNemar's} test, which is based on a \(\ch
 
 \noindent After the computation one may have a look on the \(\chi^2\) table, or compute it with ones favorite statistics-program, and then reject/or not-reject it (\textbf{Before} one must set a rejection threshold, which is typically \(\alpha = 0.05\), but other ones can also be set).\\
 Larger datasets are preferable, as one can easier spot a difference between two models.\\[1em]
-Another test one can use is the \textit{paired t-Test}, which is a method used to check if the mean difference between pairs of measurements is zero or not.\\
+Another test one can use is the \textit{paired t-Test}, which is a method used to check if the mean difference between pairs of measurements is zero or not. It is used, when one has several paired samples of training and test sets, e.g. when doing cross validation.\\
+Test statistics, where \(x_0\) is the assumed difference between the two models (for equality check set to 0), \(s_d\) is the empirical standard deviation of the differences, \(\overline{X_D}\) is the mean of the differences and \(n\) is the number of runs:
 
+\[t = \frac{\overline{X_D} - \overline{x}_0}{\frac{s_D}{\sqrt{n}}}\]
+
+\noindent The t-statistics requires the parameter \textit{degrees of freedom}, which is set to \(n - 1\). Therefore I think, one needs \(n \geq 2\) to perform this test, i.e. a single train test split is not enough.
 
 
 \newpage
