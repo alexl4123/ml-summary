@@ -30,6 +30,7 @@
 
 \usepackage{multirow}
 \usepackage{listings}
+\usepackage[yyyymmdd]{datetime}
 
 \usepackage{mdframed}
 \usepackage{lipsum}
@@ -68,6 +69,10 @@
        \iffieldundef{#1}{}{\space}}%
     \iffieldbibstring{#1}{\bibstring{\thefield{#1}}}{\stripzeros{\thefield{#1}}}}%
 }
+
+
+% - Format other dates to ''YYYY-mm-dd''
+\renewcommand{\dateseparator}{-}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -125,7 +130,7 @@
   {\bf\Large Summary}
  \end{center}
 
- \vspace*{5pt}\hspace*{5pt} 29.06.2022\hfill Summary ML\hspace*{5pt}
+ \vspace*{5pt}\hspace*{5pt} \today\hfill Summary ML\hspace*{5pt}
 \end{minipage}%
 }
 \vspace{0.5cm}
@@ -861,7 +866,7 @@ The iterative process works as in the following: A sample is taken, and classifi
 This means, that e.g. we have 5 neurons in the first layer, 3 in the second and 4 in the third. Generally the first layer is described as the \textbf{input} layer, the last layer as the \textbf{output} layer and all layers in between are called \textbf{hidden} layers.\\
 Each neuron has the same structure as a perceptron, with an activation function, which were already discussed in the perceptron part (See Section \ref{subsubsec:perceptron}). For MLPs it mostly holds, that all neurons have the same activation function. Further it is noted that for some tasks, like multiclass-classification, it is necessary to give the output of the last layer as a probability distribution. This can be achieved by the \textbf{Softmax} layer/function. It scales all outputs to a probability distribution, i.e. all outputs some up to 1 and each single one is in the range \([0,1]\).\\[1em]
 Learning is in principle for each neuron similar to perceptron learning, the difference is that now on cannot simply train all neurons at once. For this one starts at the output layer, trains each neuron, then moves one layer to the front. For this layer one must now first calculate the relative errors, which they receive from the layer further at the output. After this calculation one can now train them and then move one layer back. One can iteratively continue this process, until one reaches the input layer. This process is called \textbf{Backpropagation}.\\
-A pretty good pseudocode algorithm for Backpropagation can be found in (\cite{aima}).\\[1em]
+A pretty good pseudocode algorithm for Backpropagation can be found in (\cite{aima}, P. 748, Chapter \textit{Artificial Neural Networks - 18.7}).\\[1em]
 Further the lecture distinguishes between three different types of learning, for this one must know the concept of epochs. An epoch is one forward and one backpropagation pass over all of the provided training samples (\url{https://www.kaggle.com/code/residentmario/full-batch-mini-batch-and-online-learning/notebook}).\\
 
 \begin{itemize}

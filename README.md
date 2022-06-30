@@ -1,7 +1,7 @@
 # README
 
 This summary was written for Students of the Vienna University of Technology, which take the Machine Learning course. 
-The summary should explain most of the basic concepts.
+The summary should explain most of the basic concepts in depth, the advanced topics are also handled but not as in depth as the basic subjects.
 
 ## Please contribute
 
