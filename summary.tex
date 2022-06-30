@@ -413,7 +413,8 @@ The \textbf{basic algorithm for the decision tree learning} goes repeatedly thro
             \item \(l\) represents the amount of different classes (i.e. for eye-colors ''white'', ''pink'' and ''black'' \(l = 3\)).
             \item Measures inequality between values of a distribution.
             \item ''How often a randomly chosen element from the set would be incorrectly labeled, if it was randomly labeled according to the distribution of labels in the subset''
-            \item \(IG(p) = \sum_{i = 1}^l p_i (1 - p_i)\)
+            \item \(I_G(p) = \sum_{i = 1}^l p_i (1 - p_i)\)
+            \item I think one wants to maximize (but not \(100\%\) sure about this one): \(I_G(p(X)) - \sum_{1 = 1}^k p(X_i) \cdot I_G(p(X_i))\)
         \end{itemize}
     \item Relative Information Gain
         \begin{itemize}
