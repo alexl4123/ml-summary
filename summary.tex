@@ -141,7 +141,8 @@
 
 \section{Preliminaries}
 
-\noindent This summary is for the Machine Learning course of the Vienna University of Technology and was initially created for the Summer Term 2022 in a process of studying for the exam. This summary is available on GitHub, if you find typos, errors, want to add something (content, links, figures, ...) or just want to contribute you can do this here: \url{https://github.com/alexl4123/ml-summary}.\\
+\noindent This summary is for the Machine Learning course of the Vienna University of Technology and was initially created for the Summer Term 2022 in a process of studying for the exam. Most of the basic subjects are covered in depth in this summary, but some of the more advanced topics (like SVM or Reinforcement Learning) are not covered in depth.\\
+This summary is available on GitHub, if you find typos, errors, want to add something (content, links, figures, ...) or just want to contribute you can do this here: \url{https://github.com/alexl4123/ml-summary}.\\
 If the URL doesn't work, you can find it in GitHub if you search for:
 \begin{itemize}
     \item User: alexl4123
@@ -245,7 +246,7 @@ The problem with this method is, that this might not reflect a real world scenar
 \subsubsection{Bootstrapping}
 \label{subsubsec:bootstrapping}
 
-\noindent A bootstrap is a random sample of a dataset, which was drawn by sampling with replacement, i.e. an observation might occur multiple times in a bootstrap-sample.
+\noindent A bootstrap is a random sample of a dataset, which was drawn by sampling with replacement, i.e. an observation might occur multiple times (or not at all) in a bootstrap-sample.
 
 \subsection{Overfitting/Underfitting}
 
@@ -437,11 +438,10 @@ The basic idea is, that
 For evaluation one can use the default methods, but one additional is proposed:\\[1em]
 \textbf{Out-of-bag error (OOB)}: As we use bootstrapping, it is likely that for a single bootstrap-sample not all observations from the original dataset are present. Therefore one can add the missing observations into a \textit{bag}. Then one evaluates the entries of the bag.\\
 This process is now applied to each bootstrap sample, then one computes the average error of the observation and finally aggregates over all bootstrap samples.\\[1em]
-The exact calculation should be the following, where \(N\) is the set of observations, \(B\) the set of bootstrap samples, function \(in(i,j)\) returns true iff observation \(i\) is contained in bag \(j\), \(value(i,j)\) is either 0 (if \(i\) is wrongly predicted) or 1 (if \(i\) is correctly predicted) and \(decisionFunction(oob_i)\) can be implemented in various ways, basically it needs to aggregate all predictions of the observation, which can for instance be done with a majority vote function or a mean calculation.
+The exact calculation should be the following, where \(N\) is the set of observations, \(B\) the set of bootstrap samples, function \(in(i,j)\) returns true iff observation \(i\) is contained in bag \(j\), \(value(i,j)\) is either 0 (if \(i\) is wrongly predicted) or 1 (if \(i\) is correctly predicted) and \(decisionFunction(oob_i)\) can be implemented in various ways, basically it needs to aggregate all predictions of the observation, which can for instance be done with a majority vote function or a mean calculation.\\
+Note that in the lecture the Out-of-bar error is defined twice, although the defnitions are similar they differ in the details - the other one calculates the average out of bag error per bag, and then averages again (second algorithm).
 
 \begin{lstlisting}[escapeinside={(*}{*)}]
-
-
 (*\(oob\)*)... List of observations
 
 for i in N:
@@ -457,6 +457,25 @@ for i in N:
 return (*\(oob_{value}\)*)
 
 \end{lstlisting}
+
+
+\begin{lstlisting}[escapeinside={(*}{*)}]
+(*\(oob\)*)... List of observations
+
+for i in B:
+    (*\(oob_i \leftarrow []\)*)
+    for j in i: (for each element in the bag)
+        (*\(oob_i.append(value(j,i))\)*)
+
+    (*\(oob_i \leftarrow \frac{\sum_{j \in i} oob_i[j]}{|i|}\)*)
+
+(*\(oob_{value} \leftarrow \frac{\sum_{i \in B} oob_i}{|N|}\)*)
+    
+return (*\(oob_{value}\)*)
+
+\end{lstlisting}
+
+
 
 \subsubsection{Naive Bayes}
 \label{subsubsec:naive-bayes}
@@ -477,7 +496,7 @@ Bayes theorem tells us, that the \textit{posteriori} probability \(P(H|E)\), giv
 
 \[P(H|E) = \frac{P(E_1 | H) \cdot P(E_2 | H) \cdot ... \cdot P(E_n | H) \cdot P(H)}{P(E)} = \frac{P(H) \cdot \Pi_{i \in N} P(E_i | H)}{P(E)}\]
 
-\noindent For this we can state, that we actually do not need the \textit{marginal} probability (\(P(E)\)), as this value is constant for the given \(E\), which normalizes the result to obtain a probability, but a likelihood is also fine for our purposes. This leaves us with:
+\noindent For this we can state, that we actually do not need the \textit{marginal} probability (\(P(E)\)), as this value is constant for the given \(E\), which normalizes the result to obtain a probability, but a likelihood is also fine for our purposes. This leaves us with (\(\propto\) means proportional):
 
 \[P(H|E) \propto P(H) \cdot \Pi_{i \in N} P(E_i | H)\]
 
@@ -527,7 +546,7 @@ Generally the computation of a joint probability, e.g. \(P(H = a, E_1 = t, E_2 =
 
 \noindent Note that \(P(H = a | E_1 = t)\) and \(P(E_1 = t | E_2 = t)\) are constant.\\
 An algorithm for efficiently calculating the joint probability distribution is the \textit{Variable Eliminiation Algorithm}. Given a complete joint probability calculation with many sums, it takes out constant paths, that some parts don't need to be calculated again. Finding the best order is NP-hard, therfore usually heuristics are used for this process.\\[1em]
-\textbf{D-Seperation}: To check whether two variables are independent given some evidence, one can use D-Seperation. In general in D-Seperation one must distinguish between three types of Node-Structures (See Figure \ref{fig:d-sep} and the three points below):
+\textbf{D-Seperation}: To check whether two variables are independent given some evidence (I think this is useful to speed up computation of the joint probabilities), one can use D-Seperation. In general in D-Seperation one must distinguish between three types of Node-Structures (See Figure \ref{fig:d-sep} and the three points below):
 
 \begin{figure}[ht]
     \begin{center}
@@ -780,9 +799,9 @@ A very promising technique is \textit{Sequential Model-based Bayesian Optimizati
 
 \[P(H|E) = \frac{P(E|H) \cdot P(H)}{P(E)}\]
 
-\noindent As we are again not interested in the specific probability we can drop \(P()\) as in Naive-Bayes:
+\noindent As we are again not interested in the specific probability we can drop \(P(E)\) as in Naive-Bayes (\(\propto\) means proportional):
 
-\[P(H|E) = P(E|H) \cdot P(H)\]
+\[P(H|E) \propto  P(E|H) \cdot P(H)\]
 
 \noindent The bayesian optimization process now assumes a probability distribution \(P(H)\), which model ''how well certain Hyper-Parameters work'', i.e. the higher the better. At the beginning of the Bayesian-Optimization process this must not be the ''true'' value, therefore it iteratively it's prediction by computing the posterior \(P(H|E)\), by taking into account new evidence \(E\) which was sampled from the true function.\\
 The function that approximates the true \(P(H)\) is called \textbf{Surrogate Function} and should be efficient. The function which selects the best algorithm selection from the surrogate function is called \textbf{Acquisition Function}.
