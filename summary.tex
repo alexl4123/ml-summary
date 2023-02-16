@@ -389,7 +389,7 @@ Then one can update the weights of the perceptron according to the learning func
 
 \[w_i = w_i + \alpha \cdot L \cdot f'(\sum_{j = 1}^n w_j \cdot x_j) \cdot x_i\]
 
-\noindent A perceptron can only linearly seperate data, therefore it can learn an \(and\)- or \(or\)-Gate, but not a XOR-Gate. Further if the data is messy, such that it is not linearly seperable it can also not learn it, but will \textit{oscilate} - therefore another stopping criteria is needed.
+\noindent A perceptron can only linearly separate data, therefore it can learn an \(and\)- or \(or\)-Gate, but not a XOR-Gate. Further if the data is messy, such that it is not linearly seperable it can also not learn it, but will \textit{oscilate} - therefore another stopping criteria is needed.
 
 \subsubsection{Decision Trees}
 \label{subsubsection:dt}
@@ -564,9 +564,9 @@ An algorithm for efficiently calculating the joint probability distribution is t
 \end{figure}
 
 \begin{enumerate}
-    \item Is called a seriel connection. \(X\) and \(Y\) are seperated given that \(z\) is in the evidence \(E\).
-    \item Is called diverging connection. \(X\) and \(Y\) are seperated given that \(z\) is in the evidence \(E\).
-    \item Is called converging connection. \(X\) and \(Y\) are seperated, if \(z\) is NOT in the evidence \(E\) and further no descendent of \(z\) is in \(E\).
+    \item Is called a seriel connection. \(X\) and \(Y\) are separated given that \(z\) is in the evidence \(E\).
+    \item Is called diverging connection. \(X\) and \(Y\) are separated given that \(z\) is in the evidence \(E\).
+    \item Is called converging connection. \(X\) and \(Y\) are separated, if \(z\) is NOT in the evidence \(E\) and further no descendent of \(z\) is in \(E\).
 \end{enumerate}
 
 \noindent The next question to answer regarding Bayesian Networks is how to construct these things?\\
@@ -596,21 +596,30 @@ For the hill climbing/local search method, one can use this five step process:
 
 \subsection{Support Vector Machines (SVMs)}
 
-\noindent SVMs are a type of classifier, which try to seperate linear seperable data. They are intrinsically binary classifiers, i.e. can only classify between two classes. To extend them to multiclassification one can use for instance \(1\) vs \(all\) (Classify one class against all other classes, create a model for each class) classification.\\
-SVMs are a method which try to seperate data in a ''best possible way''. In a basic mode they only seperate linear data. When one wants to perform non-linear classification, one can use the \textit{kernel trick}, to map the data into high dimensional feature space which is again linearly seperable.\\
-The name of SVMs come from ''Support Vectors'', which are vectors in the data-space which seperate the data linearly (seperating line/margin line).\\[1em]
-The lecture just gives a rough (but very mathematical) overview, therefore in the following a few key terms are listed and explaiend:
+\noindent SVMs are a type of classifier, which try to separate linear seperable data. They are intrinsically binary classifiers, i.e. can only classify between two classes. To extend them to multiclassification one can use for instance \(1\) vs \(all\) (Classify one class against all other classes, create a model for each class) classification.\\
+SVMs are a method which try to separate data in a ''best possible way'', which means that they want to maximize the distance of a hyperplane between the distinctive groups. In the basic mode they only separate linear data. When one wants to perform non-linear classification, one can use different ''Kernels'', which transforms the data into higher dimensions, which might or might not lead the data to be separable. The \textit{kernel trick} is a trick to speed up the computation of this ''putting into higher dimensions''.\\[1em]
+The name of SVMs come from ''Support Vectors'', which are certain vectors in the mathematical derivation of the SVM. To be more precise, they are vectors in the input space, that lie on the ''margin'' (see description below and figure \ref{fig:svm}).\\
+A ''Hyperplane'' is a term, that generalizes the term ''plane'', which basically means, that it is extended to multiple dimensions, e.g. for 2 dimensions it is a line, for 3 it is a plane, etc.\\
+The principle mathematical idea behind the SVM is now to find an optimal hyperplane with respect to certain conditions. To understand the idea, one can assume that our data is two dimensional and is linearly separable (as in Figure \ref{fig:svm}). Then one defines a ''Margin'' (the \textbf{M} in Figure \ref{fig:svm}), which corresponds to the distance of the support vectors to the hyperplane. Then the \textbf{goal is to maximize the margin}, i.e. to maximize the distance between the nearest points (aka. support vectors) to the hyperplane. Further note, that the margin is generally defined as the minimal distance of a point to the hyperplane.
 
+\begin{figure}[ht]
+    \begin{center}
+    \includegraphics[width=0.5\textwidth]{imgs/svm.png}
+    \caption{SVM - Hyperplane, Support Vectors and Margin}
+    \label{fig:svm}
+    \end{center}
+\end{figure}
+
+Some further terminology:\\
 \begin{itemize}
-    \item Hard-Margin: If the data is exactly linearly seperable, one can exactly classify the data
-    \item Soft-Margin: If the data is not exactly linearly seperable, one can use a soft-margin to allow some observations to be misclassified
-    \item Kernel: Is a mathematical function, which transform the data.
-    \item Non-linear kernels: If the data is not linearly seperable, then it might be in a higher-dimension.
+    \item Hard-Margin: If the data is exactly linearly seperable, one calls the margin ''hard-margin''.
+    \item Soft-Margin: If the data is not exactly linearly seperable, one can redefine the margin mathematically, such that a certain amount of observations is misclassified. This redefinition is often called ''soft-margin''.
+    \item Kernel: Is a mathematical function, which transform the data into higher dimensions with the goal, that the data might be separable in these higher dimensions. Examples for such Kernels are e.g. the \textit{linear}, \textit{polynomial}, or the \textit{Radial Basis Function (RBF)} (in theory, it can separate data in an infinite amount of dimensions) kernels. 
 \end{itemize}
 
 \noindent In general SVMs seem to be good for rather small datasets and SVMs are not always better. Further it is noted, that kernels can also be used with other algorithms and not only SVMs.\\
-As far as the literature shows, an SVM always finds the \textit{optimal hyperplane} by e.g. Lagrange Optimization (\url{https://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf}).\\[1em]
-Different kernels exists, like the \textit{linear} (can only seperate linearly sepearble data, like the perceptron), \textit{polynomial} or the \textit{Radial basis function kernel (RBF)} (Seems to be a state of the art kernel, which can theoretically use an inifinite amount of dimensions).
+As far as the literature shows, an SVM always finds the \textit{optimal hyperplane} by e.g. Lagrange Optimization (\url{https://web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf}).\\
+An excellent mathematical derivation of the SVM can be found in the following video, which also gives a good intuition about the SVM in general: \url{https://youtu.be/_PwhiWxHK8o}.
 
 
 \newpage
